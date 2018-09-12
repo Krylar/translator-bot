@@ -1,0 +1,91 @@
+const { version } = require("discord.js");
+//const moment = require("moment");
+//require("moment-duration-format");
+const translate = require('google-translate-api');
+const yandex = require('yandex-translate')('trnsl.1.1.20180819T211713Z.1cbd110241e5bdb6.19f384b50b01a0ffc79840ce031ba61de0a8e6ed');
+
+exports.run = (client, message, chan, level) => { // eslint-disable-line no-unused-vars
+
+//  message.channel.send('toLang: ' + toLang);
+//  message.channel.send('txt: ' + txt);
+//  message.channel.send('executing gtr');
+
+  client.config.tgroup.forEach(function(element) {
+  //  console.log(element);
+    message.channel.send('element: ' + element);
+    message.channel.send('id: ' + message.channel.id);
+    if (element != message.channel.id) {
+      let tchan = message.guild.channels.get(element.toString());
+    message.channel.send('tchan: ' + tchan);
+      message.channel.send('tchan: ' + tchan.name);
+      let nm = tchan.name.split(/_+/g);
+      let lang = nm[nm.length - 1];
+      tchan.send('*** ' + tchan.name + ' ' + lang);
+
+    }
+  });
+
+var lang = 'ru';
+//var txtMsg = txt.join(" ");
+
+  // get Russian channel
+  let general_ru = message.guild.channels.find("name", "general_ru");
+
+  translate(message.content, {to: lang}).then(res => {
+//    general_ru.send(lang + '(g): ' + res.text);
+
+general_ru.send({embed: {
+    color: 3447003,
+    author: {
+      name: message.author.username,
+      icon_url: message.author.avatarURL
+    },
+    description: lang + '(g): ' + res.text,
+ }
+});
+
+
+
+  }).catch(err => {
+    console.error(err);
+  });
+
+  yandex.translate(message.content, { to: lang }, function(err, res) {
+//    general_ru.send(lang + '(y): ' + res.text);
+
+general_ru.send({embed: {
+    color: 3447003,
+    author: {
+      name: message.author.username,
+      icon_url: message.author.avatarURL
+    },
+    description: lang + '(y): ' + res.text,
+ }
+});
+
+
+
+
+
+
+  })/*.catch(err => {
+    console.error(err);
+  })*/;
+
+
+
+};
+
+exports.conf = {
+  enabled: true,
+  guildOnly: false,
+  aliases: [],
+  permLevel: "User"
+};
+
+exports.help = {
+  name: "gtr",
+  category: "Miscelaneous",
+  description: "Translate message using both Google & Yandex to other channels in translate group",
+  usage: "gtr <message>"
+};
