@@ -37,9 +37,9 @@ exports.run = async (client, message, srcChannel, level) => { // eslint-disable-
 
 //    console.log(`${lang} pre-channel tag: ${translation}`);
     // convert channel mentions in translation
-    translation = res.text.replace(/＃/g, "#");
+    translation = translation.replace(/＃/g, "#");
 //    console.log(`${lang} mid-channel tag: ${translation}`);
-    translation = res.text.replace(/(?=<#).*?(?:>)/g, (match, p1, p2, p3, offset, string) => {
+    translation = translation.replace(/(?=<#).*?(?:>)/g, (match, p1, p2, p3, offset, string) => {
       var uid = match.match(/\d+/).toString();
       var userobj = message.mentions.channels.get(uid);
       return userobj;

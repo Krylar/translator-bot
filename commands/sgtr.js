@@ -117,9 +117,9 @@ exports.conf = {
 };
 
 exports.help = {
-  name: "gtr",
+  name: "sgtr",
   category: "Miscelaneous",
   description: "Translate message to other channels in translation group",
-  usage: "gtr <message>"
+  usage: "sgtr <message>"
 };
 
