@@ -26,32 +26,14 @@ exports.run = async (client, message, srcChannel, level) => { // eslint-disable-
     var lang = element.language;
 //    var canPost = elment.canPost; // OK to post to this channel? (vs read-only)
 
-    if(element.translator == "custom" && lang == "lop") {
-      console.log("translating LOP!");
-      translation = ":rabbit:";
-      message.content.split(' ').forEach(word => {
-        rnd = Math.floor(Math.random() * 101);
-        console.log(rnd);
-        if(rnd<1) translation += " !$@#";
-        else if(rnd>=1 && rnd<10) translation += " cluck";
-        else if(rnd>=10 && rnd<20) translation += " purr";
-        else if(rnd>=20 && rnd<30) translation += " hum";
-        else if(rnd>=30 && rnd<40) translation += " growl";
-        else if(rnd>=40 && rnd<50) translation += " snort";
-        else if(rnd>=50 && rnd<60) translation += " hiss";
-        else if(rnd>=60 && rnd<70) translation += " whine";
-        else if(rnd>=70 && rnd<80) translation += " stomp";
-        else if(rnd>=80 && rnd<90) translation += " whimper";
-        else if(rnd>=90 && rnd<99) translation += " scream";
-        else if(rnd>=99 && rnd<=100) translation += " :rabbit:";
-      });
-      translation += " :rabbit2:";
-      console.log("rabbit");
-    }
-    else if(element.translator == "google" || !element.translator) {
+    if(element.translator == "google" || !element.translator || lang == "lop") {
+      if(lang=="lop") {
+        l2 = lang;
+        lang = "en";
+      }
       var res = await translate(message.content, {to: lang});
-      console.log("google");
-
+//      console.log("google");
+      if(l2) lang=l2;
       // convert user mentions in translation
       translation = res.text.replace(/(?=<@).*?(?:>)/g, (match, p1, p2, p3, offset, string) => {
         var uid = match.match(/\d+/).toString();
@@ -66,7 +48,41 @@ exports.run = async (client, message, srcChannel, level) => { // eslint-disable-
         return userobj;
       });
     }
-    // send translated text to other language channels in the group
+
+    // Lop translation
+    if(element.translator == "custom" && lang == "lop") {
+//      console.log("translating LOP!");
+      var content = translation;
+      translation = ":rabbit:";
+      content.split(' ').forEach(word => {
+        rnd = Math.floor(Math.random() * 101);
+//        console.log(rnd);
+
+        if(word.match(/^(rabbit|bunny|hare|cony|coney|pika|hyrax|chinchilla|cottontail|leveret|lapin|buck|rodent|lagomorph|doe)$/i)) {
+          translation += " Lop";
+        }
+        else if(word.match(/^(rabbits|bunnies|hares|conies|pikas|hyraxes|chinchillas|cottontails|leverets|lapins|bucks|rodents|lagomorphs)$/i)) {
+          translation += " Lops";
+        }
+        else if(rnd<1) translation += " !$@#";
+        else if(rnd>=1 && rnd<10) translation += " cluck";
+        else if(rnd>=10 && rnd<20) translation += " purr";
+        else if(rnd>=20 && rnd<30) translation += " hum";
+        else if(rnd>=30 && rnd<40) translation += " growl";
+        else if(rnd>=40 && rnd<50) translation += " snort";
+        else if(rnd>=50 && rnd<60) translation += " hiss";
+        else if(rnd>=60 && rnd<70) translation += " whine";
+        else if(rnd>=70 && rnd<80) translation += " stomp";
+        else if(rnd>=80 && rnd<90) translation += " whimper";
+        else if(rnd>=90 && rnd<99) translation += " scream";
+        else if(rnd>=99 && rnd<=100) translation += " :rabbit:";
+      });
+      translation += " :rabbit2:";
+//      console.log("rabbit");
+    }
+
+
+  // send translated text to other language channels in the group
   if(message.attachments.size >> 0) {
     urls = new Array();
     message.attachments.forEach(e => {
