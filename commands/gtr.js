@@ -27,6 +27,7 @@ exports.run = async (client, message, srcChannel, level) => { // eslint-disable-
 //    var canPost = elment.canPost; // OK to post to this channel? (vs read-only)
 
     if(element.translator == "google" || !element.translator || lang == "lop") {
+      var l2=lang;
       if(lang=="lop") {
         l2 = lang;
         lang = "en";
