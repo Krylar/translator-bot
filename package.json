@@ -1,6 +1,6 @@
 {
   "name": "translator",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "A multi-functional translator bot.",
   "main": "index.js",
   "scripts": {
@@ -29,6 +29,7 @@
     "dotenv": "^6.0.0",
     "enmap": "^4.0.12",
     "enmap-sqlite": "^2.0.5",
+    "express": "^4.16.3",
     "google-translate-api": "^2.3.0",
     "moment": "^2.20.1",
     "moment-duration-format": "^2.2.0",
